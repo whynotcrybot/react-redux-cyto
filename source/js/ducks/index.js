@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import counter from './counter'
+import cytoscape from './cytoscape'
 
 const rootReducer = combineReducers({
-  counter: counter
+  cytoscape: cytoscape
 })
 
 export default rootReducer

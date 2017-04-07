@@ -1,7 +1,6 @@
 import React from 'react'
 import cytoscape from 'cytoscape'
 
-import { Flex, Box } from 'reflexbox'
 import * as styles from './styles.css'
 
 class Home extends React.Component {

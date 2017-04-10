@@ -1,6 +1,29 @@
 const ADD_NODE = 'cyto/ADD_NODE'
 const ADD_EDGE = 'cyto/ADD_EDGE'
 
+const INITIAL_STATE = {
+  cluster: {
+    nodes: 5,
+
+    edges: [
+      { s: 1, t: 5 },
+      { s: 1, t: 2 },
+      { s: 2, t: 5 },
+      { s: 2, t: 3 },
+      { s: 3, t: 5 },
+      { s: 3, t: 4 },
+      { s: 4, t: 5 }
+    ]
+  },
+  nodes: [],
+  edges: [],
+  layout: {
+    name: 'breadthfirst',
+    directed: true,
+    padding: 10
+  }
+}
+
 export default function counterReducer (state = INITIAL_STATE, action) {
   switch (action.type) {
     case ADD_NODE:
@@ -52,28 +75,5 @@ export function addEdge (source, target) {
     type: ADD_EDGE,
     source,
     target
-  }
-}
-
-const INITIAL_STATE = {
-  cluster: {
-    nodes: 5,
-
-    edges: [
-      { s: 1, t: 5 },
-      { s: 1, t: 2 },
-      { s: 2, t: 5 },
-      { s: 2, t: 3 },
-      { s: 3, t: 5 },
-      { s: 3, t: 4 },
-      { s: 4, t: 5 }
-    ]
-  },
-  nodes: [],
-  edges: [],
-  layout: {
-    name: 'breadthfirst',
-    directed: true,
-    padding: 10
   }
 }

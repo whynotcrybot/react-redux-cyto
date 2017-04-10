@@ -18,9 +18,7 @@ const INITIAL_STATE = {
   nodes: [],
   edges: [],
   layout: {
-    name: 'breadthfirst',
-    directed: true,
-    padding: 10
+    name: 'circle'
   }
 }
 
@@ -45,7 +43,7 @@ export default function counterReducer (state = INITIAL_STATE, action) {
   }
 }
 
-export function addCluster () {
+export function newCluster () {
   return (dispatch, getState) => {
     const currentNodes = getState().cytoscape.nodes.length
     const cluster = {
@@ -63,14 +61,21 @@ export function addCluster () {
   }
 }
 
-export function addNode (id) {
+export function newNode () {
+  return (dispatch, getState) => {
+    const currentNodes = getState().cytoscape.nodes.length
+    dispatch(addNode(currentNodes + 1))
+  }
+}
+
+function addNode (id) {
   return {
     type: ADD_NODE,
     id: id
   }
 }
 
-export function addEdge (source, target) {
+function addEdge (source, target) {
   return {
     type: ADD_EDGE,
     source,

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import cytoscape from 'cytoscape'
-import { addCluster } from 'ducks/cytoscape'
+import { newCluster } from 'ducks/cytoscape'
 import Toolbar from 'components/Toolbar'
 
 import * as styles from './styles.css'
@@ -18,15 +18,15 @@ class Home extends React.Component {
 
       boxSelectionEnabled: true,
       autounselectify: false,
-      zoomingEnabled: false,
-      zoom: 1.2,
+      zoomingEnabled: true,
+      zoom: 1,
 
       style: cytoscape.stylesheet()
         .selector('node')
         .css({
-          'height': 20,
-          'width': 20,
-          'font-size': '12px',
+          'height': 26,
+          'width': 26,
+          'font-size': '15px',
           'text-valign': 'center',
           'text-halign': 'center',
           'background-color': '#555',
@@ -56,14 +56,12 @@ class Home extends React.Component {
   }
 
   componentWillMount () {
-    if (!this.props.nodes.length) this.props.addCluster()
+    if (!this.props.nodes.length) this.props.newCluster()
   }
 
   componentWillReceiveProps (props) {
     this.renderElements(props.nodes, props.edges)
     this.renderLayout(props.layout)
-
-    console.log(this.cy.json())
   }
 
   componentDidMount () {
@@ -90,7 +88,7 @@ export default connect(
   },
   function (dispatch) {
     return {
-      addCluster: () => dispatch(addCluster())
+      newCluster: () => dispatch(newCluster())
     }
   }
 )(Home)

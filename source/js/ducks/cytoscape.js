@@ -1,6 +1,27 @@
 const ADD_NODE = 'cyto/ADD_NODE'
 const ADD_EDGE = 'cyto/ADD_EDGE'
 
+export default function counterReducer (state = INITIAL_STATE, action) {
+  switch (action.type) {
+    case ADD_NODE:
+      return {...state, nodes: [...state.nodes, { data: { id: action.id } }]}
+    case ADD_EDGE:
+      return {
+        ...state,
+        edges: [
+          ...state.edges,
+          { data: {
+            id: action.source + '-' + action.target,
+            source: action.source,
+            target: action.target
+          } }
+        ]
+      }
+    default:
+      return state
+  }
+}
+
 export function addCluster () {
   return (dispatch, getState) => {
     const currentNodes = getState().cytoscape.nodes.length
@@ -54,26 +75,5 @@ const INITIAL_STATE = {
     name: 'breadthfirst',
     directed: true,
     padding: 10
-  }
-}
-
-export default function counterReducer (state = INITIAL_STATE, action) {
-  switch (action.type) {
-    case ADD_NODE:
-      return {...state, nodes: [...state.nodes, { data: { id: action.id } }]}
-    case ADD_EDGE:
-      return {
-        ...state,
-        edges: [
-          ...state.edges,
-          { data: {
-            id: action.source + '-' + action.target,
-            source: action.source,
-            target: action.target
-          } }
-        ]
-      }
-    default:
-      return state
   }
 }

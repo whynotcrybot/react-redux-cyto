@@ -48,7 +48,11 @@ class Home extends React.Component {
   }
 
   renderElements (nodes, edges) {
-    this.cy.json({elements: {nodes, edges}})
+    const formatEntities = entity => ({ data: entity })
+    this.cy.json({elements: {
+      nodes: nodes.map(formatEntities),
+      edges: edges.map(formatEntities)
+    }})
   }
 
   renderLayout (layout) {

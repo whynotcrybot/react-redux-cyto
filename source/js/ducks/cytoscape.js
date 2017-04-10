@@ -25,17 +25,17 @@ const INITIAL_STATE = {
 export default function counterReducer (state = INITIAL_STATE, action) {
   switch (action.type) {
     case ADD_NODE:
-      return {...state, nodes: [...state.nodes, { data: { id: action.id } }]}
+      return {...state, nodes: [...state.nodes, { id: action.id }]}
     case ADD_EDGE:
       return {
         ...state,
         edges: [
           ...state.edges,
-          { data: {
+          {
             id: action.source + '-' + action.target,
             source: action.source,
             target: action.target
-          } }
+          }
         ]
       }
     default:

@@ -81,6 +81,16 @@ export function addEdge (source, target) {
   return addEdge_(source, target)
 }
 
+export function removeEdge (source, target) {
+  return (dispatch, getState) => {
+    const edges = getState().cytoscape.edges.filter(edge => {
+      return !(edge.source === source && edge.target === target ||
+               edge.target === source && edge.source === target)
+    })
+    dispatch(removeEdge_(edges))
+  }
+}
+
 function addNode_ (id) {
   return {
     type: ADD_NODE,
@@ -93,5 +103,12 @@ function addEdge_ (source, target) {
     type: ADD_EDGE,
     source,
     target
+  }
+}
+
+function removeEdge_ (edges) {
+  return {
+    type: REMOVE_EDGE,
+    edges
   }
 }

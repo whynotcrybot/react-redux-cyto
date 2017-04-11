@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Flex, Box } from 'reflexbox'
 
-import { addCluster, addNode, addEdge } from 'ducks/cytoscape'
+import { addCluster, addNode, addEdge, removeEdge } from 'ducks/cytoscape'
 import * as styles from './styles.css'
 
 class Toolbar extends React.Component {
@@ -25,6 +25,10 @@ class Toolbar extends React.Component {
     this.props.addEdge(this.state.source, this.state.target)
   }
 
+  removeEdge () {
+    this.props.removeEdge(this.state.source, this.state.target)
+  }
+
   render () {
     return (
       <Flex className={styles.toolbarWrapper}>
@@ -41,6 +45,7 @@ class Toolbar extends React.Component {
             onChange={this.handleNodeChange}
           />
           <button onClick={() => this.addEdge()}>add edge</button>
+          <button onClick={() => this.removeEdge()}>remove edge</button>
         </Box>
       </Flex>
     )
@@ -53,7 +58,8 @@ export default connect(
     return {
       addCluster: () => dispatch(addCluster()),
       addNode: () => dispatch(addNode()),
-      addEdge: (source, target) => dispatch(addEdge(source, target))
+      addEdge: (source, target) => dispatch(addEdge(source, target)),
+      removeEdge: (source, target) => dispatch(removeEdge(source, target)),
     }
   }
 )(Toolbar)

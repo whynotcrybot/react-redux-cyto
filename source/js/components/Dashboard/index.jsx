@@ -38,9 +38,9 @@ class Dashboard extends React.Component {
     const tableHead = Object.keys(matrix).map(x => <th key={'h' + x}>{x}</th>)
     const tableBody = Object.keys(matrix).map(x => {
       return (
-        <tr>
+        <tr key={'r' + x}>
           <td>{x}</td>
-          {Object.keys(matrix[x]).map(y => <td>{matrix[x][y]}</td>)}
+          {Object.keys(matrix[x]).map(y => <td key={'c' + y}>{matrix[x][y]}</td>)}
         </tr>
       )
     })

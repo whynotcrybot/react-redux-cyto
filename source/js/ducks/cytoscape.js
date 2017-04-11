@@ -68,6 +68,10 @@ export function newNode () {
   }
 }
 
+export function newEdge (source, target) {
+  return addEdge(source, target)
+}
+
 function addNode (id) {
   return {
     type: ADD_NODE,

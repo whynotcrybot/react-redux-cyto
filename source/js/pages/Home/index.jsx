@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import cytoscape from 'cytoscape'
-import { newCluster } from 'ducks/cytoscape'
+import { addCluster } from 'ducks/cytoscape'
 
 import Toolbar from 'components/Toolbar'
 import Dashboard from 'components/Dashboard'
@@ -62,7 +62,7 @@ class Home extends React.Component {
   }
 
   componentWillMount () {
-    if (!this.props.nodes.length) this.props.newCluster()
+    if (!this.props.nodes.length) this.props.addCluster()
   }
 
   componentWillReceiveProps (props) {
@@ -95,7 +95,7 @@ export default connect(
   },
   (dispatch) => {
     return {
-      newCluster: () => dispatch(newCluster())
+      addCluster: () => dispatch(addCluster())
     }
   }
 )(Home)

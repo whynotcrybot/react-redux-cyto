@@ -1,5 +1,6 @@
 const ADD_NODE = 'cyto/ADD_NODE'
 const ADD_EDGE = 'cyto/ADD_EDGE'
+const REMOVE_EDGE = 'cyto/REMOVE_EDGE'
 
 const INITIAL_STATE = {
   cluster: {
@@ -41,12 +42,17 @@ export default function counterReducer (state = INITIAL_STATE, action) {
           }
         ]
       }
+    case REMOVE_EDGE:
+      return {
+        ...state,
+        edges: action.edges
+      }
     default:
       return state
   }
 }
 
-export function newCluster () {
+export function addCluster () {
   return (dispatch, getState) => {
     const currentNodes = getState().cytoscape.nodes.length
     const cluster = {
@@ -55,34 +61,34 @@ export function newCluster () {
     }
 
     for (let i = currentNodes; i < currentNodes + cluster.nodes; i++) {
-      dispatch(addNode(i + 1))
+      dispatch(addNode_(i + 1))
     }
 
     cluster.edges.forEach(edge => {
-      dispatch(addEdge(currentNodes + edge.s, currentNodes + edge.t))
+      dispatch(addEdge_(currentNodes + edge.s, currentNodes + edge.t))
     })
   }
 }
 
-export function newNode () {
+export function addNode () {
   return (dispatch, getState) => {
     const currentNodes = getState().cytoscape.nodes.length
-    dispatch(addNode(currentNodes + 1))
+    dispatch(addNode_(currentNodes + 1))
   }
 }
 
-export function newEdge (source, target) {
-  return addEdge(source, target)
+export function addEdge (source, target) {
+  return addEdge_(source, target)
 }
 
-function addNode (id) {
+function addNode_ (id) {
   return {
     type: ADD_NODE,
     id: id
   }
 }
 
-function addEdge (source, target) {
+function addEdge_ (source, target) {
   return {
     type: ADD_EDGE,
     source,

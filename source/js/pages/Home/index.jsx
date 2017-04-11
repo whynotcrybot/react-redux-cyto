@@ -2,7 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import cytoscape from 'cytoscape'
 import { newCluster } from 'ducks/cytoscape'
+
 import Toolbar from 'components/Toolbar'
+import Dashboard from 'components/Dashboard'
 
 import * as styles from './styles.css'
 
@@ -77,6 +79,7 @@ class Home extends React.Component {
       <div>
         <Toolbar />
         <div className={styles.cytoscapeWrapper} id='cy' />
+        {this.cy ? <Dashboard elements={this.cy.elements()} /> : ''}
       </div>
     )
   }

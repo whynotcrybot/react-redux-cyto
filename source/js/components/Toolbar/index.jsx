@@ -17,10 +17,8 @@ const Toolbar = (props) => {
 }
 
 export default connect(
-  function (state) {
-    return {}
-  },
-  function (dispatch) {
+  () => ({}),
+  (dispatch) => {
     return {
       newCluster: () => dispatch(newCluster()),
       newNode: () => dispatch(newNode())

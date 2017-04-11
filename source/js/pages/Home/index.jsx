@@ -86,14 +86,14 @@ class Home extends React.Component {
 }
 
 export default connect(
-  function (state) {
+  (state) => {
     return {
       nodes: state.cytoscape.nodes,
       edges: state.cytoscape.edges,
       layout: state.cytoscape.layout
     }
   },
-  function (dispatch) {
+  (dispatch) => {
     return {
       newCluster: () => dispatch(newCluster())
     }

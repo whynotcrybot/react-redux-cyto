@@ -65,7 +65,7 @@ class Dashboard extends React.Component {
 }
 
 export default connect(
-  function (state) {
+  (state) => {
     return {
       nodes: state.cytoscape.nodes,
       edges: state.cytoscape.edges

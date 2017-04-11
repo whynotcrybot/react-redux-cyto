@@ -18,7 +18,10 @@ const INITIAL_STATE = {
   nodes: [],
   edges: [],
   layout: {
-    name: 'circle'
+    name: 'circle',
+    fit: false,
+    animate: true,
+    animationDuration: 320
   }
 }
 

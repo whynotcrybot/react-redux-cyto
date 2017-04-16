@@ -1,4 +1,7 @@
-.toolbar-wrapper {
-  position: fixed;
-  z-index: 2;
+.wrapper {
+
+}
+
+.node-id-input {
+  width:50px;
 }

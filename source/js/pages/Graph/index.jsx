@@ -82,11 +82,8 @@ class Graph extends React.Component {
           <div className={styles.cytoscapeWrapper} id='cy' />
         </Box>
         <Box col={4}>
-          {this.cy ? (
-            <Dashboard elements={this.cy.elements()}>
-              <Toolbar />
-            </Dashboard>
-          ) : ''}
+          <Toolbar />
+          {this.cy ? <Dashboard elements={this.cy.elements()} /> : ''}
         </Box>
       </Flex>
     )

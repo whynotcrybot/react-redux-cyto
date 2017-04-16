@@ -1,68 +1,13 @@
 const GRAPH_INIT = 'cyto/GRAPH_INIT'
+const ADD_CLUSTER = 'cyto/ADD_CLUSTER'
 const ADD_NODE = 'cyto/ADD_NODE'
 const ADD_EDGE = 'cyto/ADD_EDGE'
 const REMOVE_EDGE = 'cyto/REMOVE_EDGE'
 
+import clusters from '../../config/clusters'
+
 const INITIAL_STATE = {
-  clusters: {
-
-    graph34: {
-      nodes: 8,
-      edges: [
-        { s: 1, t: 2 },
-        { s: 1, t: 4 },
-        { s: 1, t: 7 },
-        { s: 2, t: 3 },
-        { s: 2, t: 6 },
-        { s: 2, t: 8 },
-        { s: 3, t: 5 },
-        { s: 3, t: 7 },
-        { s: 4, t: 5 },
-        { s: 4, t: 6 },
-        { s: 5, t: 8 },
-        { s: 6, t: 7 },
-        { s: 7, t: 8 }
-      ]
-    },
-
-    graph25: {
-      nodes: 7,
-      edges: [
-        { s: 1, t: 2 },
-        { s: 1, t: 3 },
-        { s: 1, t: 7 },
-        { s: 2, t: 3 },
-        { s: 2, t: 4 },
-        { s: 2, t: 5 },
-        { s: 3, t: 4 },
-        { s: 3, t: 6 },
-        { s: 4, t: 5 },
-        { s: 4, t: 6 },
-        { s: 5, t: 6 },
-        { s: 5, t: 7 },
-        { s: 6, t: 7 }
-      ]
-    },
-
-    graph4: {
-      nodes: 7,
-      edges: [
-        { s: 1, t: 2 },
-        { s: 1, t: 3 },
-        { s: 1, t: 5 },
-        { s: 2, t: 3 },
-        { s: 2, t: 4 },
-        { s: 2, t: 5 },
-        { s: 3, t: 5 },
-        { s: 3, t: 6 },
-        { s: 4, t: 5 },
-        { s: 4, t: 7 },
-        { s: 5, t: 6 },
-        { s: 5, t: 7 },
-        { s: 6, t: 7 }
-      ]
-    }
-  },
+  clusters: clusters,
   layout: {
     name: 'circle',
     fit: false,
@@ -78,8 +23,17 @@ export default function cytoscapeReducer (state = INITIAL_STATE, action) {
       return {
         ...state,
         [graph]: {
+          addedClusters: 0,
           nodes: [],
           edges: []
+        }
+      }
+    case ADD_CLUSTER:
+      return {
+        ...state,
+        [graph]: {
+          ...state[graph],
+          addedClusters: state[graph].addedClusters + 1
         }
       }
     case ADD_NODE:
@@ -130,15 +84,19 @@ export function initGraph (graph) {
 
 export function addCluster (graph) {
   return (dispatch, getState) => {
-    const currentNodes = getState().cytoscape[graph].nodes.length
+    const currentClusters = getState().cytoscape[graph].addedClusters
     const cluster = getState().cytoscape.clusters[graph]
 
-    for (let i = currentNodes; i < currentNodes + cluster.nodes; i++) {
-      dispatch(addNode_(graph, i + 1))
+    dispatch(addCluster_(graph))
+
+    for (let i = 0; i < cluster.nodes; i++) {
+      dispatch(addNode_(graph, (currentClusters + 1) + '-' + (i + 1)))
     }
 
     cluster.edges.forEach(edge => {
-      dispatch(addEdge_(graph, currentNodes + edge.s, currentNodes + edge.t))
+      const source = (currentClusters + 1) + '-' + edge.s
+      const target = (currentClusters + 1) + '-' + edge.t
+      dispatch(addEdge_(graph, source, target))
     })
   }
 }
@@ -167,6 +125,13 @@ export function removeEdge (graph, source, target) {
 function initGraph_ (graph) {
   return {
     type: GRAPH_INIT,
+    graph
+  }
+}
+
+function addCluster_ (graph) {
+  return {
+    type: ADD_CLUSTER,
     graph
   }
 }

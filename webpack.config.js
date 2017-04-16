@@ -53,7 +53,6 @@ loaders.css = {
     {
       loader: 'css-loader',
       options: {
-        localIdentName: '[local]',
         camelCase: true
       }
     },

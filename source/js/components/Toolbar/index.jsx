@@ -56,12 +56,13 @@ class Toolbar extends React.Component {
 
 export default connect(
   () => ({}),
-  (dispatch) => {
+  (dispatch, ownProps) => {
+    const graph = ownProps.graph
     return {
-      addCluster: () => dispatch(addCluster()),
-      addNode: () => dispatch(addNode()),
-      addEdge: (source, target) => dispatch(addEdge(source, target)),
-      removeEdge: (source, target) => dispatch(removeEdge(source, target)),
+      addCluster: () => dispatch(addCluster(graph)),
+      addNode: () => dispatch(addNode(graph)),
+      addEdge: (source, target) => dispatch(addEdge(graph, source, target)),
+      removeEdge: (source, target) => dispatch(removeEdge(graph, source, target))
     }
   }
 )(Toolbar)

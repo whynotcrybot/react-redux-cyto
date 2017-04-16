@@ -66,9 +66,8 @@ class Graph extends React.Component {
 
   componentWillMount () {
     if (!this.props.nodes.length) {
-      const graph = this.props.graph
-      this.props.initGraph(graph)
-      this.props.addCluster(graph)
+      this.props.initGraph()
+      this.props.addCluster()
     }
   }
 
@@ -91,7 +90,7 @@ class Graph extends React.Component {
           <div className={styles.cytoscapeCanvasWrapper} id={this.props.graph} />
         </Box>
         <Dashboard>
-          <Toolbar />
+          <Toolbar graph={this.props.graph} />
           {this.cy ? (
             <Matrix
               elements={this.cy.elements()}
@@ -113,10 +112,11 @@ export default connect(
       layout: state.cytoscape.layout
     }
   },
-  (dispatch) => {
+  (dispatch, ownProps) => {
+    const graph = ownProps.graph
     return {
-      initGraph: (graph) => dispatch(initGraph(graph)),
-      addCluster: (graph) => dispatch(addCluster(graph))
+      initGraph: () => dispatch(initGraph(graph)),
+      addCluster: () => dispatch(addCluster(graph))
     }
   }
 )(Graph)

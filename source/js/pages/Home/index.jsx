@@ -5,6 +5,7 @@ const Home = () => {
   return (
     <div>
       <Graph graph='cy1' />
+      <Graph graph='cy2' />
     </div>
   )
 }

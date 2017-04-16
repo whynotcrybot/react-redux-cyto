@@ -5,28 +5,61 @@ const REMOVE_EDGE = 'cyto/REMOVE_EDGE'
 
 const INITIAL_STATE = {
   clusters: {
-    // cluster cy1
-    cy1: {
-      nodes: 5,
+
+    graph34: {
+      nodes: 8,
       edges: [
-        { s: 1, t: 5 },
         { s: 1, t: 2 },
-        { s: 2, t: 5 },
+        { s: 1, t: 4 },
+        { s: 1, t: 7 },
         { s: 2, t: 3 },
+        { s: 2, t: 6 },
+        { s: 2, t: 8 },
         { s: 3, t: 5 },
-        { s: 3, t: 4 },
-        { s: 4, t: 5 }
+        { s: 3, t: 7 },
+        { s: 4, t: 5 },
+        { s: 4, t: 6 },
+        { s: 5, t: 8 },
+        { s: 6, t: 7 },
+        { s: 7, t: 8 }
       ]
     },
-    // cluster cy2
-    cy2: {
-      nodes: 4,
+
+    graph25: {
+      nodes: 7,
       edges: [
-        { s: 2, t: 1 },
-        { s: 3, t: 2 },
-        { s: 4, t: 3 },
+        { s: 1, t: 2 },
+        { s: 1, t: 3 },
+        { s: 1, t: 7 },
+        { s: 2, t: 3 },
+        { s: 2, t: 4 },
+        { s: 2, t: 5 },
         { s: 3, t: 4 },
-        { s: 4, t: 1 }
+        { s: 3, t: 6 },
+        { s: 4, t: 5 },
+        { s: 4, t: 6 },
+        { s: 5, t: 6 },
+        { s: 5, t: 7 },
+        { s: 6, t: 7 }
+      ]
+    },
+
+    graph4: {
+      nodes: 7,
+      edges: [
+        { s: 1, t: 2 },
+        { s: 1, t: 3 },
+        { s: 1, t: 5 },
+        { s: 2, t: 3 },
+        { s: 2, t: 4 },
+        { s: 2, t: 5 },
+        { s: 3, t: 5 },
+        { s: 3, t: 6 },
+        { s: 4, t: 5 },
+        { s: 4, t: 7 },
+        { s: 5, t: 6 },
+        { s: 5, t: 7 },
+        { s: 6, t: 7 }
       ]
     }
   },

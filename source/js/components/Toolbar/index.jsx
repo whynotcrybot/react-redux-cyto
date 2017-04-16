@@ -38,10 +38,12 @@ class Toolbar extends React.Component {
           <br />
           <input
             id='source'
+            className={styles.nodeIdInput}
             onChange={this.handleNodeChange}
           />
           <input
             id='target'
+            className={styles.nodeIdInput}
             onChange={this.handleNodeChange}
           />
           <button onClick={() => this.addEdge()}>add edge</button>

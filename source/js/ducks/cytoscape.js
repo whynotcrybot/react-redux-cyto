@@ -1,5 +1,6 @@
 const ADD_NODE = 'cyto/ADD_NODE'
 const ADD_EDGE = 'cyto/ADD_EDGE'
+const REMOVE_EDGE = 'cyto/REMOVE_EDGE'
 
 const INITIAL_STATE = {
   cluster: {
@@ -18,7 +19,10 @@ const INITIAL_STATE = {
   nodes: [],
   edges: [],
   layout: {
-    name: 'circle'
+    name: 'circle',
+    fit: false,
+    animate: true,
+    animationDuration: 320
   }
 }
 
@@ -38,12 +42,17 @@ export default function counterReducer (state = INITIAL_STATE, action) {
           }
         ]
       }
+    case REMOVE_EDGE:
+      return {
+        ...state,
+        edges: action.edges
+      }
     default:
       return state
   }
 }
 
-export function newCluster () {
+export function addCluster () {
   return (dispatch, getState) => {
     const currentNodes = getState().cytoscape.nodes.length
     const cluster = {
@@ -52,33 +61,54 @@ export function newCluster () {
     }
 
     for (let i = currentNodes; i < currentNodes + cluster.nodes; i++) {
-      dispatch(addNode(i + 1))
+      dispatch(addNode_(i + 1))
     }
 
     cluster.edges.forEach(edge => {
-      dispatch(addEdge(currentNodes + edge.s, currentNodes + edge.t))
+      dispatch(addEdge_(currentNodes + edge.s, currentNodes + edge.t))
     })
   }
 }
 
-export function newNode () {
+export function addNode () {
   return (dispatch, getState) => {
     const currentNodes = getState().cytoscape.nodes.length
-    dispatch(addNode(currentNodes + 1))
+    dispatch(addNode_(currentNodes + 1))
   }
 }
 
-function addNode (id) {
+export function addEdge (source, target) {
+  return addEdge_(source, target)
+}
+
+export function removeEdge (source, target) {
+  return (dispatch, getState) => {
+    const edges = getState().cytoscape.edges.filter(edge => {
+      return !(edge.source === source && edge.target === target ||
+               edge.target === source && edge.source === target)
+    })
+    dispatch(removeEdge_(edges))
+  }
+}
+
+function addNode_ (id) {
   return {
     type: ADD_NODE,
     id: id
   }
 }
 
-function addEdge (source, target) {
+function addEdge_ (source, target) {
   return {
     type: ADD_EDGE,
     source,
     target
+  }
+}
+
+function removeEdge_ (edges) {
+  return {
+    type: REMOVE_EDGE,
+    edges
   }
 }

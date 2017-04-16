@@ -33,7 +33,6 @@ class Dashboard extends React.Component {
   render () {
     this.calculateMatrix(this.props.elements)
     const matrix = this.state.matrix
-    console.log(matrix)
 
     const tableHead = Object.keys(matrix).map(x => <th key={'h' + x}>{x}</th>)
     const tableBody = Object.keys(matrix).map(x => {

@@ -19,7 +19,7 @@ class Graph extends React.Component {
 
   renderCytoscapeElement () {
     this.cy = cytoscape({
-      container: document.getElementById('cy'),
+      container: document.getElementById(this.props.cy),
 
       boxSelectionEnabled: true,
       autounselectify: false,
@@ -79,9 +79,12 @@ class Graph extends React.Component {
 
   render (props) {
     return (
-      <Flex wrap>
+      <Flex
+        className={styles.wrapper}
+        wrap
+      >
         <Box col={8}>
-          <div className={styles.cytoscapeWrapper} id='cy' />
+          <div className={styles.cytoscapeCanvasWrapper} id={this.props.cy} />
         </Box>
         <Dashboard>
           <Toolbar />

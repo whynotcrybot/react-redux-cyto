@@ -1,4 +1,7 @@
-.cytoscape-wrapper {
-  height: 100vh;
+.wrapper {
+  border-bottom: 1px solid lightgrey;
+}
+.cytoscape-canvas-wrapper {
+  height: 500px;
   width: 100%;
 }

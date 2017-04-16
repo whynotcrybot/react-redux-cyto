@@ -3,7 +3,10 @@ import Graph from '../Graph'
 
 const Home = () => {
   return (
-    <Graph />
+    <div>
+      <Graph cy='cy1' />
+      <Graph cy='cy2' />
+    </div>
   )
 }
 

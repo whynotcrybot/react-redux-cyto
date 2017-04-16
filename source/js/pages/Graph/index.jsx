@@ -4,8 +4,10 @@ import cytoscape from 'cytoscape'
 import { Flex, Box } from 'reflexbox'
 
 import { addCluster } from 'ducks/cytoscape'
-import Toolbar from 'components/Toolbar'
+
 import Dashboard from 'components/Dashboard'
+import Toolbar from 'components/Toolbar'
+import Matrix from 'components/Matrix'
 
 import * as styles from './styles.css'
 
@@ -81,10 +83,10 @@ class Graph extends React.Component {
         <Box col={8}>
           <div className={styles.cytoscapeWrapper} id='cy' />
         </Box>
-        <Box col={4}>
+        <Dashboard>
           <Toolbar />
-          {this.cy ? <Dashboard elements={this.cy.elements()} /> : ''}
-        </Box>
+          {this.cy ? <Matrix elements={this.cy.elements()} /> : ''}
+        </Dashboard>
       </Flex>
     )
   }

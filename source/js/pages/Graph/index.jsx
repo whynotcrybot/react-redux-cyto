@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import cytoscape from 'cytoscape'
 import { Flex, Box } from 'reflexbox'
 
-import { addCluster } from 'ducks/cytoscape'
+import { initGraph, addCluster } from 'ducks/cytoscape'
 
 import Dashboard from 'components/Dashboard'
 import Toolbar from 'components/Toolbar'
@@ -19,7 +19,7 @@ class Graph extends React.Component {
 
   renderCytoscapeElement () {
     this.cy = cytoscape({
-      container: document.getElementById('cy'),
+      container: document.getElementById(this.props.graph),
 
       boxSelectionEnabled: true,
       autounselectify: false,
@@ -65,7 +65,10 @@ class Graph extends React.Component {
   }
 
   componentWillMount () {
-    if (!this.props.nodes.length) this.props.addCluster()
+    if (!this.props.nodes.length) {
+      this.props.initGraph()
+      this.props.addCluster()
+    }
   }
 
   componentWillReceiveProps (props) {
@@ -79,13 +82,21 @@ class Graph extends React.Component {
 
   render (props) {
     return (
-      <Flex wrap>
+      <Flex
+        className={styles.wrapper}
+        wrap
+      >
         <Box col={8}>
-          <div className={styles.cytoscapeWrapper} id='cy' />
+          <div className={styles.cytoscapeCanvasWrapper} id={this.props.graph} />
         </Box>
         <Dashboard>
-          <Toolbar />
-          {this.cy ? <Matrix elements={this.cy.elements()} /> : ''}
+          <Toolbar graph={this.props.graph} />
+          {this.cy ? (
+            <Matrix
+              elements={this.cy.elements()}
+              nodes={this.props.nodes}
+            />
+          ) : ''}
         </Dashboard>
       </Flex>
     )
@@ -93,16 +104,19 @@ class Graph extends React.Component {
 }
 
 export default connect(
-  (state) => {
+  (state, ownProps) => {
+    const graph = ownProps.graph
     return {
-      nodes: state.cytoscape.nodes,
-      edges: state.cytoscape.edges,
+      nodes: state.cytoscape[graph] ? state.cytoscape[graph].nodes : [],
+      edges: state.cytoscape[graph] ? state.cytoscape[graph].edges : [],
       layout: state.cytoscape.layout
     }
   },
-  (dispatch) => {
+  (dispatch, ownProps) => {
+    const graph = ownProps.graph
     return {
-      addCluster: () => dispatch(addCluster())
+      initGraph: () => dispatch(initGraph(graph)),
+      addCluster: () => dispatch(addCluster(graph))
     }
   }
 )(Graph)

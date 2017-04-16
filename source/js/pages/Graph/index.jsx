@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import cytoscape from 'cytoscape'
-import { addCluster } from 'ducks/cytoscape'
+import { Flex, Box } from 'reflexbox'
 
+import { addCluster } from 'ducks/cytoscape'
 import Toolbar from 'components/Toolbar'
 import Dashboard from 'components/Dashboard'
 
@@ -76,11 +77,18 @@ class Graph extends React.Component {
 
   render (props) {
     return (
-      <div>
-        <Toolbar />
-        <div className={styles.cytoscapeWrapper} id='cy' />
-        {this.cy ? <Dashboard elements={this.cy.elements()} /> : ''}
-      </div>
+      <Flex wrap>
+        <Box col={8}>
+          <div className={styles.cytoscapeWrapper} id='cy' />
+        </Box>
+        <Box col={4}>
+          {this.cy ? (
+            <Dashboard elements={this.cy.elements()}>
+              <Toolbar />
+            </Dashboard>
+          ) : ''}
+        </Box>
+      </Flex>
     )
   }
 }

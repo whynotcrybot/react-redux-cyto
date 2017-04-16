@@ -47,6 +47,7 @@ class Dashboard extends React.Component {
     return (
       <Flex>
         <Box>
+          {this.props.children}
           <h1>Dashboard</h1>
           <table>
             <tbody>

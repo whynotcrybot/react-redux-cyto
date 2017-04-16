@@ -31,7 +31,7 @@ class Toolbar extends React.Component {
 
   render () {
     return (
-      <Flex className={styles.toolbarWrapper}>
+      <Flex className={styles.wrapper}>
         <Box>
           <button onClick={() => this.props.addCluster()}>add cluster</button>
           <button onClick={() => this.props.addNode()}>add node</button>

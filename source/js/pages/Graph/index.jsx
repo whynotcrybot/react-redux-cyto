@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import cytoscape from 'cytoscape'
 import { Flex, Box } from 'reflexbox'
 
-import { addCluster } from 'ducks/cytoscape'
+import { initGraph, addCluster } from 'ducks/cytoscape'
 
 import Dashboard from 'components/Dashboard'
 import Toolbar from 'components/Toolbar'
@@ -19,7 +19,7 @@ class Graph extends React.Component {
 
   renderCytoscapeElement () {
     this.cy = cytoscape({
-      container: document.getElementById(this.props.cy),
+      container: document.getElementById(this.props.graph),
 
       boxSelectionEnabled: true,
       autounselectify: false,
@@ -65,7 +65,11 @@ class Graph extends React.Component {
   }
 
   componentWillMount () {
-    if (!this.props.nodes.length) this.props.addCluster()
+    if (!this.props.nodes.length) {
+      const graph = this.props.graph
+      this.props.initGraph(graph)
+      this.props.addCluster(graph)
+    }
   }
 
   componentWillReceiveProps (props) {
@@ -84,11 +88,16 @@ class Graph extends React.Component {
         wrap
       >
         <Box col={8}>
-          <div className={styles.cytoscapeCanvasWrapper} id={this.props.cy} />
+          <div className={styles.cytoscapeCanvasWrapper} id={this.props.graph} />
         </Box>
         <Dashboard>
           <Toolbar />
-          {this.cy ? <Matrix elements={this.cy.elements()} /> : ''}
+          {this.cy ? (
+            <Matrix
+              elements={this.cy.elements()}
+              nodes={this.props.nodes}
+            />
+          ) : ''}
         </Dashboard>
       </Flex>
     )
@@ -96,16 +105,18 @@ class Graph extends React.Component {
 }
 
 export default connect(
-  (state) => {
+  (state, ownProps) => {
+    const graph = ownProps.graph
     return {
-      nodes: state.cytoscape.nodes,
-      edges: state.cytoscape.edges,
+      nodes: state.cytoscape[graph] ? state.cytoscape[graph].nodes : [],
+      edges: state.cytoscape[graph] ? state.cytoscape[graph].edges : [],
       layout: state.cytoscape.layout
     }
   },
   (dispatch) => {
     return {
-      addCluster: () => dispatch(addCluster())
+      initGraph: (graph) => dispatch(initGraph(graph)),
+      addCluster: (graph) => dispatch(addCluster(graph))
     }
   }
 )(Graph)

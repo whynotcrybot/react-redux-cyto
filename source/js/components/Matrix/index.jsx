@@ -62,11 +62,4 @@ class Matrix extends React.Component {
   }
 }
 
-export default connect(
-  (state) => {
-    return {
-      nodes: state.cytoscape.nodes,
-      edges: state.cytoscape.edges
-    }
-  }
-)(Matrix)
+export default Matrix

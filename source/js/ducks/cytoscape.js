@@ -1,3 +1,4 @@
+const GRAPH_INIT = 'cyto/GRAPH_INIT'
 const ADD_NODE = 'cyto/ADD_NODE'
 const ADD_EDGE = 'cyto/ADD_EDGE'
 const REMOVE_EDGE = 'cyto/REMOVE_EDGE'
@@ -16,8 +17,6 @@ const INITIAL_STATE = {
       { s: 4, t: 5 }
     ]
   },
-  nodes: [],
-  edges: [],
   layout: {
     name: 'circle',
     fit: false,
@@ -26,21 +25,45 @@ const INITIAL_STATE = {
   }
 }
 
-export default function counterReducer (state = INITIAL_STATE, action) {
+export default function cytoscapeReducer (state = INITIAL_STATE, action) {
+  const graph = action.graph
   switch (action.type) {
-    case ADD_NODE:
-      return {...state, nodes: [...state.nodes, { id: action.id }]}
-    case ADD_EDGE:
+    case GRAPH_INIT:
       return {
         ...state,
-        edges: [
-          ...state.edges,
-          {
-            id: action.source + '-' + action.target,
-            source: action.source,
-            target: action.target
-          }
-        ]
+        [graph]: {
+          nodes: [],
+          edges: []
+        }
+      }
+    case ADD_NODE:
+      const id = action.id
+      return {
+        ...state,
+        [graph]: {
+          ...state[graph],
+          nodes: [
+            ...state[graph].nodes,
+            { id: id }
+          ]
+        }
+      }
+    case ADD_EDGE:
+      const source = action.source
+      const target = action.target
+      return {
+        ...state,
+        [graph]: {
+          ...state[graph],
+          edges: [
+            ...state[graph].edges,
+            {
+              id: source + '-' + target,
+              source: source,
+              target: target
+            }
+          ]
+        }
       }
     case REMOVE_EDGE:
       return {
@@ -52,20 +75,24 @@ export default function counterReducer (state = INITIAL_STATE, action) {
   }
 }
 
-export function addCluster () {
+export function initGraph (graph) {
+  return initGraph_(graph)
+}
+
+export function addCluster (graph) {
   return (dispatch, getState) => {
-    const currentNodes = getState().cytoscape.nodes.length
+    const currentNodes = getState().cytoscape[graph].nodes.length
     const cluster = {
       nodes: getState().cytoscape.cluster.nodes,
       edges: getState().cytoscape.cluster.edges
     }
 
     for (let i = currentNodes; i < currentNodes + cluster.nodes; i++) {
-      dispatch(addNode_(i + 1))
+      dispatch(addNode_(graph, i + 1))
     }
 
     cluster.edges.forEach(edge => {
-      dispatch(addEdge_(currentNodes + edge.s, currentNodes + edge.t))
+      dispatch(addEdge_(graph, currentNodes + edge.s, currentNodes + edge.t))
     })
   }
 }
@@ -91,16 +118,25 @@ export function removeEdge (source, target) {
   }
 }
 
-function addNode_ (id) {
+function initGraph_ (graph) {
   return {
-    type: ADD_NODE,
-    id: id
+    type: GRAPH_INIT,
+    graph
   }
 }
 
-function addEdge_ (source, target) {
+function addNode_ (graph, id) {
+  return {
+    type: ADD_NODE,
+    graph,
+    id
+  }
+}
+
+function addEdge_ (graph, source, target) {
   return {
     type: ADD_EDGE,
+    graph,
     source,
     target
   }

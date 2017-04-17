@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dashboard -t 'React-Redux Boilerplate' -- webpack-dev-server --colors --no-info"
+    "start": "webpack-dashboard -- webpack-dev-server --colors --no-info"
   },
   "repository": {
     "type": "git",

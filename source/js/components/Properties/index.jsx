@@ -8,6 +8,7 @@ class Properties extends React.Component {
   constructor () {
     super()
     this.state = {
+      showMatrices: false,
       matrixSimple: {},
       matrixWeighted: {},
       s: null,
@@ -74,7 +75,7 @@ class Properties extends React.Component {
         else {
           const distance = elements.aStar({root: $x, goal: $y}).distance
           matrix[x][y] = distance || null
-          sum += distance
+          sum += distance || null
         }
 
         if (matrix[x][y] > this.state.d) this.state.d = matrix[x][y]
@@ -95,8 +96,12 @@ class Properties extends React.Component {
     return (
       <Flex>
         <Box>
-          <Matrix matrix={this.state.matrixSimple} />
-          <Matrix matrix={this.state.matrixWeighted} />
+          {this.state.showMatrices ? (
+            <div>
+              <Matrix matrix={this.state.matrixSimple} />
+              <Matrix matrix={this.state.matrixWeighted} />
+            </div>
+          ) : ''}
           <p>S = {this.state.s}</p>
           <p>D = {this.state.d}</p>
           <p>_D = {this.state._d}</p>

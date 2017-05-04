@@ -6,8 +6,6 @@ import { Flex, Box } from 'reflexbox'
 import { initGraph, addCluster } from 'ducks/cytoscape'
 
 import Dashboard from 'components/Dashboard'
-import Toolbar from 'components/Toolbar'
-import Matrix from 'components/Matrix'
 
 import * as styles from './styles.css'
 
@@ -89,15 +87,12 @@ class Graph extends React.Component {
         <Box col={8}>
           <div className={styles.cytoscapeCanvasWrapper} id={this.props.graph} />
         </Box>
-        <Dashboard>
-          <Toolbar graph={this.props.graph} />
-          {this.cy ? (
-            <Matrix
-              elements={this.cy.elements()}
-              nodes={this.props.nodes}
-            />
-          ) : ''}
-        </Dashboard>
+        {this.cy ? (
+          <Dashboard
+            graph={this.props.graph}
+            elements={this.cy.elements()}
+          />
+        ) : ''}
       </Flex>
     )
   }

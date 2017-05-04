@@ -84,7 +84,7 @@ class Graph extends React.Component {
         className={styles.wrapper}
         wrap
       >
-        <Box col={6}>
+        <Box col={8}>
           <div className={styles.cytoscapeCanvasWrapper} id={this.props.graph} />
         </Box>
         {this.cy ? (

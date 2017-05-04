@@ -8,7 +8,7 @@ import GraphProperties from '../Properties'
 const Dashboard = (props) => {
   return (
     <Box
-      col={6}
+      col={4}
       p={2}
       className={styles.wrapper}
     >

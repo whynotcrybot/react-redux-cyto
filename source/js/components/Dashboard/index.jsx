@@ -3,7 +3,7 @@ import { Box } from 'reflexbox'
 import * as styles from './styles.css'
 
 import Toolbar from '../Toolbar'
-import Matrix from '../Matrix'
+import GraphProperties from '../Properties'
 
 const Dashboard = (props) => {
   return (
@@ -13,7 +13,7 @@ const Dashboard = (props) => {
       className={styles.wrapper}
     >
       <Toolbar graph={props.graph} />
-      <Matrix
+      <GraphProperties
         elements={props.elements}
         nodes={props.nodes}
       />

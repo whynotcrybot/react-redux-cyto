@@ -9,13 +9,13 @@ const Dashboard = (props) => {
   return (
     <Box
       col={4}
-      p={1}
+      p={2}
       className={styles.wrapper}
     >
       <Toolbar graph={props.graph} />
       <GraphProperties
         elements={props.elements}
-        nodes={props.nodes}
+        graph={props.graph}
       />
     </Box>
   )

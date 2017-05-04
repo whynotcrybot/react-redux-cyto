@@ -2,16 +2,63 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Flex, Box } from 'reflexbox'
 
-class Matrix extends React.Component {
+import Matrix from './Matrix'
+
+class Properties extends React.Component {
   constructor () {
     super()
     this.state = {
-      matrix: {}
+      matrixSimple: {},
+      matrixWeighted: {},
+      s: null,
+      d: null,
+      _d: null,
+      c: null,
+      t: null
     }
   }
 
-  calculateMatrix (elements) {
+  calculateSimpleAdjacencyMatrix () {
     let matrix = {}
+    let sMax = 0
+
+    this.props.nodes.forEach(nodeX => {
+      const x = nodeX.id
+      let s = 0
+
+      this.props.nodes.forEach(nodeY => {
+        const y = nodeY.id
+
+        if (!(x in matrix)) matrix[x] = {}
+        if (x === y) matrix[x][y] = null
+        else if (y in matrix) {
+          if (matrix[y][x] === 1) s++
+          matrix[x][y] = matrix[y][x]
+        } else {
+          matrix[x][y] = null
+          this.props.edges.some(edge => {
+            const hasConnections = ((edge.source === x && edge.target === y) ||
+                (edge.source === y && edge.target === x))
+
+            if (hasConnections) {
+              matrix[x][y] = 1
+              s++
+              return true
+            }
+          })
+        }
+      })
+
+      if (s > sMax) sMax = s
+    })
+
+    this.state.s = sMax
+    return matrix
+  }
+
+  calculateWeightedAdjacencyMatrix (elements) {
+    let matrix = {}
+    let sum = 0
 
     this.props.nodes.forEach(nodeX => {
       const x = nodeX.id
@@ -20,46 +67,53 @@ class Matrix extends React.Component {
       this.props.nodes.forEach(nodeY => {
         const y = nodeY.id
         const $y = '#' + y
+
         if (!(x in matrix)) matrix[x] = {}
-        if (x === y) matrix[x][y] = 0
+        if (x === y) matrix[x][y] = null
         else if (y in matrix) matrix[x][y] = matrix[y][x]
-        else matrix[x][y] = elements.aStar({root: $x, goal: $y}).distance || 0
+        else {
+          const distance = elements.aStar({root: $x, goal: $y}).distance
+          matrix[x][y] = distance || null
+          sum += distance
+        }
+
+        if (matrix[x][y] > this.state.d) this.state.d = matrix[x][y]
       })
     })
 
-    this.state.matrix = matrix
+    const nodes = this.props.nodes.length
+    this.state._d = sum / (nodes * (nodes - 1))
+    this.state.c = this.state.d * nodes * this.state.s
+    this.state.t = (2 * this.state._d) / this.state.s
+    return matrix
   }
 
   render () {
-    this.calculateMatrix(this.props.elements)
-    const matrix = this.state.matrix
-
-    const tableHead = Object.keys(matrix).map(x => <th key={'h' + x}>{x}</th>)
-    const tableBody = Object.keys(matrix).map(x => {
-      return (
-        <tr key={'r' + x}>
-          <td>{x}</td>
-          {Object.keys(matrix[x]).map(y => <td key={'c' + y}>{matrix[x][y]}</td>)}
-        </tr>
-      )
-    })
+    this.state.matrixSimple = this.calculateSimpleAdjacencyMatrix()
+    this.state.matrixWeighted = this.calculateWeightedAdjacencyMatrix(this.props.elements)
 
     return (
       <Flex>
         <Box>
-          <table>
-            <tbody>
-              <tr>
-                <th />
-                {tableHead}
-              </tr>
-              {tableBody}
-            </tbody>
-          </table>
+          <Matrix matrix={this.state.matrixSimple} />
+          <Matrix matrix={this.state.matrixWeighted} />
+          <p>S = {this.state.s}</p>
+          <p>D = {this.state.d}</p>
+          <p>_D = {this.state._d}</p>
+          <p>C = {this.state.c}</p>
+          <p>T = {this.state.t}</p>
         </Box>
       </Flex>
     )
   }
 }
 
-export default Matrix
+export default connect(
+  (state, ownProps) => {
+    const graph = ownProps.graph
+    return {
+      nodes: state.cytoscape[graph] ? state.cytoscape[graph].nodes : [],
+      edges: state.cytoscape[graph] ? state.cytoscape[graph].edges : []
+    }
+  }
+)(Properties)

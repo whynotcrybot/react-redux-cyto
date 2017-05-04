@@ -91,7 +91,6 @@ class Graph extends React.Component {
           <Dashboard
             graph={this.props.graph}
             elements={this.cy.elements()}
-            nodes={this.props.nodes}
           />
         ) : ''}
       </Flex>

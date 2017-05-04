@@ -5,8 +5,7 @@ const Home = () => {
   return (
     <div>
       <Graph graph='graph34' />
-      <Graph graph='graph25' />
-      <Graph graph='graph4' />
+
     </div>
   )
 }
